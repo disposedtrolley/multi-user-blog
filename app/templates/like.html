@@ -1,0 +1,39 @@
+<form class="form-like" method="post" action="like">
+    <!-- display different like button colour and text if
+    currently logged-in user has liked the post -->
+    {% if like_self %}
+        <!-- hide like button for users' own posts -->
+        {% if post.author != username %}
+        <button type="submit" class="btn btn-info button-like">
+            <span class="glyphicon glyphicon-thumbs-up"></span>
+        </button>
+        {% endif %}
+        <a href="#" data-toggle="modal" data-target="#likes-modal">You and {{like_others_num}} others</a>  liked this.
+    {% else %}
+        {% if post.author != username %}
+        <button type="submit" class="btn btn-default button-like">
+            <span class="glyphicon glyphicon-thumbs-up"></span>
+        </button>
+        {% endif %}
+        <a href="#" data-toggle="modal" data-target="#likes-modal">{{like_others_num}} people</a>  liked this.
+    {% endif %}
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="likes-modal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Likes</h4>
+            </div>
+            <div class="modal-body">
+                {% for like in like_others %}
+                    <a href="/blog/profile/{{like.username}}">{{like.username}}</a>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

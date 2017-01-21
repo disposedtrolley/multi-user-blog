@@ -1,0 +1,65 @@
+<!-- Comments Form -->
+<div class="well">
+    <h4>Leave a Comment:</h4>
+    <form method="post" action="comment">
+        <div class="form-group">
+            <textarea class="form-control" rows="3" name="comment"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Post</button>
+    </form>
+</div>
+
+<hr>
+<!-- Posted Comments -->
+
+<!-- Comment -->
+{% for comment in comments %}
+    <div class="media">
+        <div class="media-body">
+            <h4 class="media-heading"><a href="/blog/profile/{{comment.username}}">
+                {{comment.username}}</a>
+                {% if comment.username == username %}
+                <div class="hover-btn">
+                    <button type="button" data-toggle="modal" data-target="#{{comment.key().id()}}-edit-modal" class="close"><span class="glyphicon glyphicon-pencil"></span></button>
+                </div>
+                {% endif %}
+                <small>{{comment.created.strftime("%b %d, %Y")}} at {{comment.created.strftime("%-I:%M%p")}}</small>
+            </h4>
+            {% for line in comment.comment.splitlines() %}
+                {{line}}<br>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="{{comment.key().id()}}-edit-modal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit comment</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="{{post.key().id()}}/comment/{{comment.key().id()}}/edit" method="post">
+                        <fieldset>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="10" name="comment">{{comment.comment}}</textarea>
+                            </div>
+                            {{error}}
+                            <hr class="colorgraph">
+                            <div class="row">
+                                <div class="col-xs-8 col-sm-8 col-md-8">
+                                    <input type="submit" name="save" class="btn btn-lg btn-success btn-block" value="Save">
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4">
+                                    <input type="submit" name="delete" class="btn btn-lg btn-danger btn-block" value="Delete">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

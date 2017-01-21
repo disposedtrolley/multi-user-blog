@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+
+    <!-- Blog Post Content Column -->
+    <div class="col-lg-8">
+
+        <!-- Blog Post -->
+
+        <!-- Title -->
+        <h1>{{post.subject}}</h1>
+
+        {% if post.author == username %}
+            <form action="{{post.key().id()}}/edit" method="get">
+                <button class="btn btn-default pull-right" type="submit"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+            </form>
+        {% endif %}
+
+        <!-- Author -->
+        <p class="lead">
+            by <a href="/blog/profile/{{post.author}}">{{post.author}}</a>
+        </p>
+
+        <hr>
+
+        <!-- Date/Time -->
+        <p><span class="glyphicon glyphicon-time"></span> Posted on {{post.created.strftime("%b %d, %Y")}} at {{post.created.strftime("%-I:%M%p")}}</p>
+
+        <br>
+
+        <!-- Post Content -->
+        <p class="lead">
+            {% for line in post.content.splitlines() %}
+                {{line}}<br>
+            {% endfor %}
+        </p>
+
+        <hr>
+
+        <!-- Likes and Comments -->
+        {% include "like.html" %}
+        <br>
+        {% include "comment.html" %}
+
+    </div>
+
+</div>
+<!-- /.row -->
+{% endblock %}

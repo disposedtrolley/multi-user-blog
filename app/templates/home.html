@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+
+    <!-- Blog Entries Column -->
+    <div class="col-md-8">
+
+        <h1 class="page-header">
+            Home
+        </h1>
+
+        {% for post in posts %}
+            <h2>
+                <a href="/blog/post/{{post.key().id()}}">{{post.subject}}</a>
+            </h2>
+            <p class="lead">
+                by <a href="/blog/profile/{{post.author}}">{{post.author}}</a>
+            </p>
+            <p><span class="glyphicon glyphicon-time"></span> Posted on {{post.created.strftime("%b %d, %Y")}} at {{post.created.strftime("%-I:%M%p")}}</p>
+            <br>
+            <p>{{post.content}}</p>
+            <hr>
+        {% endfor %}
+    </div>
+
+</div>
+<!-- /.row -->
+{% endblock %}
